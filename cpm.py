@@ -33,8 +33,8 @@ project_root_dir = os.path.abspath(os.path.curdir)
 # print('PM> Project Dir: {}'.format(project_root_dir))
 
 project_build_dir = project_root_dir + '/.Build'
-binary_file_dir = project_root_dir + '/bin/Debug'
-binary_file_path = binary_file_dir + '/' + project_name + '.exe'
+binary_file_dir = project_root_dir + '/export/bin/Debug'
+binary_file_path = binary_file_dir + '/' + project_name + 'Test.exe'
 
 if cmd_type == 'build':
     print('Start build debug library')
@@ -67,7 +67,7 @@ elif cmd_type == 'clean':
     else:
         # print('=> .Build is not a dir.')
         pass
-    print('=> Finished clean .Build dir.')
+    print('=> Finished clean .Build dir: {}'.format(project_build_dir))
 elif cmd_type == 'debug':
     debug_cmd = 'start {}/{}.sln'.format(project_build_dir, project_name)
     os.system(debug_cmd)
