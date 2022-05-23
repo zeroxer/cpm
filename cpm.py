@@ -1,6 +1,8 @@
 import argparse
+from multiprocessing import cpu_count
 from pathlib import Path
 import os
+import sys
 import shutil
 import configparser
 import time
@@ -36,11 +38,19 @@ project_build_dir = project_root_dir + '/.Build'
 binary_file_dir = project_root_dir + '/export/bin/Debug'
 binary_file_path = binary_file_dir + '/' + project_name + 'Test.exe'
 
+# 多线程🧬选项
+if sys.platform == 'win32':
+    multithread_flag = '/m /nologo'
+else:
+    import multiprocessing
+    cpu_count = max(1, multiprocessing.cpu_count() - 2)
+    multithread_flag = '-j {}'.format(cpu_count)
+
 if cmd_type == 'build':
     print('Start build debug library')
     Path('./.Build').mkdir(parents=True, exist_ok=True)
     generate_cmd = 'cmake -S {} -B {}'.format(project_root_dir, project_build_dir)
-    build_cmd = 'cmake --build {} --config Debug -- /m /nologo'.format(project_build_dir)
+    build_cmd = 'cmake --build {} --config Debug -- {}'.format(project_build_dir, multithread_flag)
     # 统计时间
     start_time = time.time()
     os.system(generate_cmd)
